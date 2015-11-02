@@ -1,0 +1,28 @@
+;;;; -*- Scheme -*-
+(use srfi-1)
+(use srfi-13)
+
+;;; on some systems cairo is compiled with pthread support using the
+;;; option '-pthread'. We need to parse the pkgconfig output to prefix
+;;; any non-include directives with '-C' so that csc passes them through
+;;; to the c-compiler.
+(define mark-compiler-options 
+  (lambda (m s)
+    (reduce (lambda (s1 s2) (string-append s1 " " s2))
+	    ""
+	    (map (lambda (option)
+		   (if (string-prefix? "-I" option)
+		       option
+		       (string-append m " " option)))
+		 (string-tokenize s)))))
+
+(let ((pkg-cflags (mark-compiler-options "-C" (with-input-from-pipe "pkg-config --cflags cairo" read-line)))
+      (pkg-lflags (mark-compiler-options "-L" (with-input-from-pipe "pkg-config --libs cairo" read-line))))
+      (compile -s -O2 cairo.scm -j cairo -lcairo ,pkg-cflags ,pkg-lflags)
+      (compile -c -O2 cairo.scm -unit cairo ,pkg-cflags ,pkg-lflags)
+      (compile -s -O2 cairo.import.scm ,pkg-cflags ,pkg-lflags))
+
+(install-extension 
+ 'cairo
+ '("cairo.so" "cairo.import.so" "cairo.o") 
+ '((version 0.1.15)))

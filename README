@@ -1,0 +1,34 @@
+Chicken bindings for Cairo, a vector graphics library
+-----------------------------------------------------
+
+Chicken Cairo is licensed under the LGPL. See the
+file "COPYING", in this archive.
+
+http://www.call-with-current-continuation.org/ - Chicken Scheme compiler
+
+Some things you will need:
+ - A current version of cairo: http://cairo.freedesktop.org/
+   (Last compiled with HEAD revision 2004-11-09)
+ - For the test program, chicken-sdl (including sdl-csi)
+
+Before employing make in the regular fashion, be sure pkg-config can
+find your cairo.pc: you may need to
+
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+
+You'll also need sdl.so from chicken-sdl handy -- either installed, or
+copied into the directory -- for the test program to run.  Try
+
+/path/to/sdl-csi test-cairo.scm
+
+The latest version of chicken-cairo should be available from a
+GNU/Arch archive at http://www.eighty-twenty.org/archives/
+
+-----------------------------------------------------
+
+Copyright (C) 2004, 2005
+Michael Bridgen <mikeb@squaremobius.net>
+Tony Garnock-Jones <tonyg@kcbbs.gen.nz>
+
+Created with the gracious indulgence of LShift Ltd.
+http://www.lshift.net/opensource.html
