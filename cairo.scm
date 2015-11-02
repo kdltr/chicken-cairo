@@ -104,6 +104,12 @@ EOF
 
 ;; %%% TO DO Several surface creation procedures
 
+(define cairo-surface-reference (foreign-lambda cairo_surface_t "cairo_surface_reference" cairo_surface_t))
+(define cairo-surface-destroy (foreign-lambda void "cairo_surface_reference" cairo_surface_t))
+
+(define cairo-format-stride-for-width
+  (foreign-lambda int "cairo_format_stride_for_width" integer int))
+
 (define cairo-image-surface-create-for-data (foreign-lambda cairo_surface_t "cairo_image_surface_create_for_data"
                                                             (c-pointer byte)
                                                             integer
@@ -184,6 +190,17 @@ EOF
 ; http://cairographics.org/samples/snippets.html has
 ; pictures of the results.
 (define cairo-set-operator (foreign-lambda void "cairo_set_operator" cairo_t integer))
+
+(define-foreign-type cairo_pattern_t (c-pointer "cairo_pattern_t")
+  values
+  (cut tag-pointer <> 'cairo-pattern))
+
+(define cairo-pattern-reference (foreign-lambda cairo_pattern_t "cairo_pattern_reference" cairo_pattern_t))
+(define cairo-pattern-destroy (foreign-lambda void "cairo_pattern_destroy" cairo_pattern_t))
+
+(define cairo-set-source (foreign-lambda void "cairo_set_source" cairo_t cairo_pattern_t))
+
+(define cairo-get-source (foreign-lambda cairo_pattern_t "cairo_get_source" cairo_t))
 
 ; formerly cairo-set-rgb-color
 (define cairo-set-source-rgb (foreign-lambda void "cairo_set_source_rgb"
@@ -281,6 +298,11 @@ EOF
 (define-foreign-type cairo_matrix_t (c-pointer "cairo_matrix_t")
   values
   (cut tag-pointer <> 'cairo-matrix))
+
+(define print-matrix
+  (foreign-lambda* void
+                   ((cairo_matrix_t m))
+                   "printf(\"%f %f %f %f %f %f\\n\", m->xx, m->xy, m->x0, m->yx, m->yy, m->y0);"))
 
 (define %fill-matrix
   (foreign-lambda* (c-pointer cairo_matrix_t)
@@ -511,6 +533,8 @@ EOF
   (cut tag-pointer <> 'cairo-font))
 
 ;; Here would be the text extent stuff, certainly useful
+(define cairo-text-path
+  (foreign-lambda void "cairo_text_path" cairo_t c-string))
 
 ;; .. and here, converting fonts to paths
 
