@@ -18,11 +18,19 @@
 
 (let ((pkg-cflags (mark-compiler-options "-C" (with-input-from-pipe "pkg-config --cflags cairo" read-line)))
       (pkg-lflags (mark-compiler-options "-L" (with-input-from-pipe "pkg-config --libs cairo" read-line))))
-      (compile -s -O2 cairo.scm -j cairo -lcairo ,pkg-cflags ,pkg-lflags)
+      (compile -s -O2 cairo.scm -J ,pkg-cflags ,pkg-lflags)
+      (compile -s -O2 cairo.svg.scm -J ,pkg-cflags ,pkg-lflags)
       (compile -c -O2 cairo.scm -unit cairo ,pkg-cflags ,pkg-lflags)
-      (compile -s -O2 cairo.import.scm ,pkg-cflags ,pkg-lflags))
+      (compile -c -O2 cairo.svg.scm -o cairo.svg.o -unit cairo.svg ,pkg-cflags ,pkg-lflags)
+      (compile -s -O2 cairo.image.scm -J ,pkg-cflags ,pkg-lflags)
+      (compile -c -O2 cairo.image.scm -o cairo.image.o -unit cairo.image ,pkg-cflags ,pkg-lflags)
+      (compile -s -O2 cairo.import.scm)
+      (compile -s -O2 cairo.svg.import.scm)
+      (compile -s -O2 cairo.image.import.scm))
 
 (install-extension 
  'cairo
- '("cairo.so" "cairo.import.so" "cairo.o") 
- '((version 0.1.15)))
+ '("cairo.so" "cairo.import.so" "cairo.o"
+   "cairo.svg.so" "cairo.svg.import.so" "cairo.svg.o"
+   "cairo.image.so" "cairo.image.import.so" "cairo.image.o")
+ '((version 1.0.0)))
