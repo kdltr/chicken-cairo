@@ -39,6 +39,11 @@
 
 (export +format-rgb24+)
 (define +format-rgb24+ (foreign-value "CAIRO_FORMAT_RGB24" integer))
+(export +antialias-none+ +antialias-fast+ +antialias-good+ +antialias-best+)
+(define +antialias-none+ (foreign-value "CAIRO_ANTIALIAS_NONE" integer))
+(define +antialias-fast+ (foreign-value "CAIRO_ANTIALIAS_FAST" integer))
+(define +antialias-good+ (foreign-value "CAIRO_ANTIALIAS_GOOD" integer))
+(define +antialias-best+ (foreign-value "CAIRO_ANTIALIAS_BEST" integer))
 
 ;; TODO symbol / list of symbols to enum value conversion
 (define-foreign-type status (enum "cairo_status_t"))
