@@ -13,7 +13,7 @@
       `(begin
          ,@(map
             (lambda (def)
-              (let ((name (inject (second def)))
+              (let ((name (strip-syntax (second def)))
                     (return-type (first def))
                     (argument-types (cddr def)))
                 `(begin
