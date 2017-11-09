@@ -45,6 +45,12 @@
 (define +antialias-good+ (foreign-value "CAIRO_ANTIALIAS_GOOD" integer))
 (define +antialias-best+ (foreign-value "CAIRO_ANTIALIAS_BEST" integer))
 
+(export +extend-none+ +extend-repeat+ +extend-reflect+ +extend-pad+)
+(define +extend-none+ (foreign-value "CAIRO_EXTEND_NONE" integer))
+(define +extend-repeat+ (foreign-value "CAIRO_EXTEND_REPEAT" integer))
+(define +extend-reflect+ (foreign-value "CAIRO_EXTEND_REFLECT" integer))
+(define +extend-pad+ (foreign-value "CAIRO_EXTEND_PAD" integer))
+
 ;; TODO symbol / list of symbols to enum value conversion
 (define-foreign-type status (enum "cairo_status_t"))
 (define-foreign-type content integer)
@@ -55,6 +61,7 @@
 (define-foreign-type operator integer)
 (define-foreign-type format integer)
 (define-foreign-type surface-type integer)
+(define-foreign-type extend integer)
 
 
 ;; Opaque data types

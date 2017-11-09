@@ -170,6 +170,23 @@
   (void surface-unmap-image! surface surface)
   )
 
+;; Patterns procedures
+;; -----------------------------------------------
+
+(defs
+  (pattern pattern-create-radial double double double double double double)
+  (pattern pattern-create-mesh)
+  (void pattern-destroy! pattern)
+  (void pattern-add-color-stop-rgb! pattern double double double double)
+  (void pattern-add-color-stop-rgba! pattern double double double double double)
+  (void mesh-pattern-begin-patch! pattern)
+  (void mesh-pattern-end-patch! pattern)
+  (void mesh-pattern-move-to! pattern double double)
+  (void mesh-pattern-line-to! pattern double double)
+  (void mesh-pattern-curve-to! pattern double double double double double double)
+  (void mesh-pattern-set-corner-color-rgb! pattern unsigned-int double double double)
+  (void mesh-pattern-set-corner-color-rgba! pattern unsigned-int double double double double)
+  (void pattern-set-extend! pattern extend))
 
 ;; Transformations procedures
 ;; -----------------------------------------------
