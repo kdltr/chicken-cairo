@@ -193,4 +193,20 @@
   (void rotate! context double)
   )
 
+;; Text procedures
+;; -----------------------------------------------
+
+(defs
+  (void select-font-face! context c-string font-slant font-weight)
+  (void set-font-size! context double)
+  (void show-text! context c-string)
+  (void font-extents context nonnull-f64vector)
+  (void text-extents context c-string nonnull-f64vector)
+  (font-options font-options-create)
+  (void set-font-options! context font-options)
+  (void font-options-set-antialias! font-options antialias)
+  (void font-options-set-hint-style! font-options hint-style)
+  (void font-options-set-hint-metrics! font-options hint-metrics)
+  )
+
 )
