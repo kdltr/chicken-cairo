@@ -1,6 +1,7 @@
 (module cairo.image
   ()
-  (import scheme chicken)
+  (import scheme chicken lolevel foreign)
+  (import-for-syntax srfi-1 srfi-13 data-structures)
   (include "types.scm")
   (foreign-declare "#include \"cairo.h\"")
 
