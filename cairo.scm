@@ -42,6 +42,7 @@
 
 (include "types.scm")
 
+
 ;; Context procedures
 ;; -----------------------------------------------
 
@@ -166,6 +167,7 @@
   (void surface-unmap-image! surface surface)
   )
 
+
 ;; Patterns procedures
 ;; -----------------------------------------------
 
@@ -184,6 +186,7 @@
   (void mesh-pattern-set-corner-color-rgba! pattern unsigned-int double double double double)
   (void pattern-set-extend! pattern extend))
 
+
 ;; Transformations procedures
 ;; -----------------------------------------------
 
@@ -191,7 +194,10 @@
   (void translate! context double double)
   (void scale! context double double)
   (void rotate! context double)
+  (void identity-matrix context)
+  
   )
+
 
 ;; Text procedures
 ;; -----------------------------------------------
@@ -202,11 +208,22 @@
   (void show-text! context c-string)
   (void font-extents context nonnull-f64vector)
   (void text-extents context c-string nonnull-f64vector)
-  (font-options font-options-create)
   (void set-font-options! context font-options)
   (void font-options-set-antialias! font-options antialias)
   (void font-options-set-hint-style! font-options hint-style)
-  (void font-options-set-hint-metrics! font-options hint-metrics)
+  (void font-options-set-hint-metrics! font-options hint-metrics))
+
+
+;; Font face procedures
+;; -----------------------------------------------
+
+(defs
+  (void font-face-destroy! font-face)
+  (status font-face-status font-face)
+  (font-type font-face-get-type font-face)
+  (font-options font-options-create)
+  (font-face get-font-face context)
+  
   )
 
 )

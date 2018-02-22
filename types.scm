@@ -177,6 +177,9 @@
 (define-foreign-type font-options (c-pointer "cairo_font_options_t")
   (check-pointer 'cairo:font-options) (add-tag 'cairo:font-options))
 
+(define-foreign-type font-face (c-pointer "cairo_font_face_t")
+  (check-pointer 'cairo:font-face) (add-tag 'cairo:font-face))
+
 (define-foreign-type device (c-pointer "cairo_device_t")
   (check-pointer 'cairo:device) (add-tag 'cairo:device))
 
