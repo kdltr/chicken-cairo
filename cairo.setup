@@ -22,13 +22,13 @@
   (compile -c -O2 cairo.scm -J -unit cairo ,pkg-cflags ,pkg-lflags)
   
   (compile -s -O2 cairo.surface.svg.scm -J ,pkg-cflags ,pkg-lflags)
-  (compile -c -O2 cairo.surface.svg.scm -J -unit cairo.surface.svg ,pkg-cflags ,pkg-lflags)
+  (compile -c -O2 cairo.surface.svg.scm -J -o cairo.surface.svg.o -unit cairo.surface.svg ,pkg-cflags ,pkg-lflags)
   
   (compile -s -O2 cairo.surface.image.scm -J ,pkg-cflags ,pkg-lflags)
-  (compile -c -O2 cairo.surface.image.scm -J -unit cairo.surface.image ,pkg-cflags ,pkg-lflags)
+  (compile -c -O2 cairo.surface.image.scm -J -o cairo.surface.image.o -unit cairo.surface.image ,pkg-cflags ,pkg-lflags)
   
   (compile -s -O2 cairo.surface.xlib.scm -J ,pkg-cflags ,pkg-lflags -lX11)
-  (compile -c -O2 cairo.surface.xlib.scm -J -unit cairo.surface.xlib ,pkg-cflags ,pkg-lflags)
+  (compile -c -O2 cairo.surface.xlib.scm -J -o cairo.surface.xlib.o -unit cairo.surface.xlib ,pkg-cflags ,pkg-lflags)
   
   (compile -s -O2 cairo.import.scm)
   (compile -s -O2 cairo.surface.svg.import.scm)
@@ -37,8 +37,8 @@
 
 (install-extension 
  'cairo
- '("cairo.so" "cairo.import.so" "cairo.o" "cairo.types"
-   "cairo.svg.so" "cairo.svg.import.so" "cairo.svg.o"
-   "cairo.image.so" "cairo.image.import.so" "cairo.image.o"
-   "cairo.xlib.so" "cairo.xlib.import.so" "cairo.xlib.o")
+ '("cairo.so" "cairo.import.so" "cairo.o"
+   "cairo.surface.svg.so" "cairo.surface.svg.import.so" "cairo.surface.svg.o"
+   "cairo.surface.image.so" "cairo.surface.image.import.so" "cairo.surface.image.o"
+   "cairo.surface.xlib.so" "cairo.surface.xlib.import.so" "cairo.surface.xlib.o")
  '((version 1.0.0)))
