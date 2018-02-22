@@ -1,4 +1,4 @@
-(module cairo.svg
+(module cairo.surface.svg
  ()
 
  (import scheme chicken foreign lolevel)

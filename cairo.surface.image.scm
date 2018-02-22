@@ -1,4 +1,4 @@
-(module cairo.image
+(module cairo.surface.image
   ()
   (import scheme chicken lolevel foreign)
   (import-for-syntax srfi-1 srfi-13 data-structures)

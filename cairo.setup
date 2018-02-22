@@ -18,22 +18,22 @@
 
 (let ((pkg-cflags (mark-compiler-options "-C" (with-input-from-pipe "pkg-config --cflags cairo" read-line)))
       (pkg-lflags (mark-compiler-options "-L" (with-input-from-pipe "pkg-config --libs cairo" read-line))))
-  (compile -s -O2 -ot cairo.types cairo.scm -J ,pkg-cflags ,pkg-lflags)
-  (compile -debug M -c -O2 cairo.scm -J -unit cairo ,pkg-cflags ,pkg-lflags)
+  (compile -s -O2 cairo.scm -J ,pkg-cflags ,pkg-lflags)
+  (compile -c -O2 cairo.scm -J -unit cairo ,pkg-cflags ,pkg-lflags)
   
-  (compile -s -O2 cairo.svg.scm -J ,pkg-cflags ,pkg-lflags)
-  (compile -debug M -c -O2 cairo.svg.scm -J -o cairo.svg.o -unit cairo.svg ,pkg-cflags ,pkg-lflags)
+  (compile -s -O2 cairo.surface.svg.scm -J ,pkg-cflags ,pkg-lflags)
+  (compile -c -O2 cairo.surface.svg.scm -J -unit cairo.surface.svg ,pkg-cflags ,pkg-lflags)
   
-  (compile -s -O2 cairo.image.scm -J ,pkg-cflags ,pkg-lflags)
-  (compile -debug M -c -O2 cairo.image.scm -J -o cairo.image.o -unit cairo.image ,pkg-cflags ,pkg-lflags)
+  (compile -s -O2 cairo.surface.image.scm -J ,pkg-cflags ,pkg-lflags)
+  (compile -c -O2 cairo.surface.image.scm -J -unit cairo.surface.image ,pkg-cflags ,pkg-lflags)
   
-  (compile -s -O2 cairo.xlib.scm -J ,pkg-cflags ,pkg-lflags -lX11)
-  (compile -debug M -c -O2 cairo.xlib.scm -J -o cairo.xlib.o -unit cairo.xlib ,pkg-cflags ,pkg-lflags)
+  (compile -s -O2 cairo.surface.xlib.scm -J ,pkg-cflags ,pkg-lflags -lX11)
+  (compile -c -O2 cairo.surface.xlib.scm -J -unit cairo.surface.xlib ,pkg-cflags ,pkg-lflags)
   
   (compile -s -O2 cairo.import.scm)
-  (compile -s -O2 cairo.svg.import.scm)
-  (compile -s -O2 cairo.image.import.scm)
-  (compile -s -O2 cairo.xlib.import.scm))
+  (compile -s -O2 cairo.surface.svg.import.scm)
+  (compile -s -O2 cairo.surface.image.import.scm)
+  (compile -s -O2 cairo.surface.xlib.import.scm))
 
 (install-extension 
  'cairo
