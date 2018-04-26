@@ -120,7 +120,7 @@
 (enum surface-type "CAIRO_SURFACE_TYPE_"
       image pdf ps xlib xcb glitz quartz win32 beos
       directfb svg os2 win32-printing quartz-image
-      script qt recording vg gl drm tee xml #;sika
+      script qt recording vg gl drm tee xml #;skia
       subsurface cogl)
 
 (enum format "CAIRO_FORMAT_"
