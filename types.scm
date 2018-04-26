@@ -1,3 +1,5 @@
+(use lolevel)
+
 ;; defs: Defines a bunch of foreign procedures, renaming the symbol to be more scheme-y
 (define-for-syntax (struct-name str)
   (string-append "cairo_"
