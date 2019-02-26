@@ -20,25 +20,14 @@
 
 ; --------------------------------------------------
 
-(module cairo
- ()
- (import chicken scheme foreign lolevel srfi-1 srfi-4)
+(module cairo ()
+
+
+(import chicken scheme foreign lolevel srfi-1 srfi-4)
 
  (import-for-syntax scheme srfi-1 srfi-13 srfi-14 data-structures)
 
  (foreign-declare "#include \"cairo.h\"")
-
-;; Define a list of DEFINEs or enums at once.
-(define-syntax --cairo-flags
-  (lambda (e r c)
-    (let ((strs (cdr e)))
-      `(begin
-  ,@(append-map (lambda (str)
-    (let* ((sym (string->symbol str))
-    (psym (string->symbol (string-append "-" (symbol->string sym)))))
-      `((,(r 'define-foreign-variable) ,psym unsigned-integer ,str)
-        (,(r 'define) ,sym ,psym))))
-         strs)))))
 
 (include "types.scm")
 
