@@ -1,8 +1,7 @@
 (module cairo.surface.xlib
  ()
 
-(import scheme chicken foreign lolevel)
-(import-for-syntax srfi-1 srfi-13 data-structures)
+(import scheme (chicken base) (chicken foreign))
 
 (include "types.scm")
 (foreign-declare "#include \"cairo.h\"")

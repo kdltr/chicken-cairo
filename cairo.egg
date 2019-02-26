@@ -1,0 +1,15 @@
+;;; cairo.meta -*- Scheme -*-
+
+((synopsis "Chicken bindings for Cairo, a vector graphics library")
+ (category graphics)
+ (license "LGPL-2.1")
+ (author "Adrien (Kooda) Ramos")
+ (dependencies srfi-1 srfi-4)
+ (components (extension cairo
+                        (custom-build "build"))
+             (extension cairo.surface.svg
+                        (custom-build "build"))
+             (extension cairo.surface.image
+                        (custom-build "build"))
+             (extension cairo.surface.xlib
+                        (custom-build "build"))))

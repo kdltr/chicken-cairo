@@ -1,4 +1,5 @@
-(use lolevel)
+(import (chicken format) (chicken memory) (chicken module) (chicken syntax))
+(import-for-syntax (chicken string) srfi-1 srfi-13)
 
 ;; defs: Defines a bunch of foreign procedures, renaming the symbol to be more scheme-y
 (define-for-syntax (struct-name str)
@@ -36,10 +37,13 @@
                               symbols))
              (sym->int (map (lambda (s) `(cons ',s ,s)) symbols))
              (int->sym (map (lambda (s) `(cons ,s ',s)) symbols)))
-        `(let ,bindings
-           (define-foreign-type ,typename integer
-             (lambda (sym) (cdr (assq sym (list ,@sym->int))))
-             (lambda (int) (cdr (assq int (list ,@int->sym)))))) ))))
+        `(begin
+           (define sym->int-proc)
+           (define int->sym-proc)
+           (let ,bindings
+             (set! sym->int-proc (lambda (sym) (cdr (assq sym (list ,@sym->int)))))
+             (set! int->sym-proc (lambda (int) (cdr (assq int (list ,@int->sym))))))
+           (define-foreign-type ,typename integer sym->int-proc int->sym-proc))))))
 
 (define ((check-pointer tag) o)
   (if (tagged-pointer? o tag)

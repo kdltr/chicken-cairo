@@ -1,7 +1,0 @@
-;;; cairo.meta -*- Scheme -*-
-
-((synopsis "Chicken bindings for Cairo, a vector graphics library")
- (category graphics)
- (license "LGPL-2.1")
- (author "Michael Bridgen and Tony Garnock-Jones")
- (files "COPYING" "cairo.setup" "README" "Makefile" "cairo.release-info" "test-cairo.scm" "cairo.scm" "debian/control" "debian/rules" "debian/copyright" "debian/changelog" "cairo.meta"))

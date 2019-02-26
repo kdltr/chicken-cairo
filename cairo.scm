@@ -23,11 +23,9 @@
 (module cairo ()
 
 
-(import chicken scheme foreign lolevel srfi-1 srfi-4)
+(import scheme (chicken base) (chicken foreign))
 
- (import-for-syntax scheme srfi-1 srfi-13 srfi-14 data-structures)
-
- (foreign-declare "#include \"cairo.h\"")
+(foreign-declare "#include \"cairo.h\"")
 
 (include "types.scm")
 

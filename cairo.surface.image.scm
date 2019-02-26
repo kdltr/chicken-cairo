@@ -1,7 +1,6 @@
 (module cairo.surface.image
   ()
-  (import scheme chicken lolevel foreign)
-  (import-for-syntax srfi-1 srfi-13 data-structures)
+  (import scheme (chicken base) (chicken foreign))
   (include "types.scm")
   (foreign-declare "#include \"cairo.h\"")
 
@@ -19,9 +18,9 @@
   (int image-surface-get-height surface)
   (int image-surface-get-stride surface))
 
-(when (foreign-value "CAIRO_HAS_PNG_FUNCTIONS" bool)
-  (defs
-    (surface image-surface-create-from-png c-string)
-    (status surface-write-to-png! surface c-string)))
+;; TODO conditional definition when CAIRO_HAS_PNG_FUNCTIONS is not defined
+(defs
+  (surface image-surface-create-from-png c-string)
+  (status surface-write-to-png! surface c-string))
 
 )
