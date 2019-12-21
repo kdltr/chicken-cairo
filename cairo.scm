@@ -54,7 +54,8 @@
   (antialias get-antialias context)
   (void set-dash! context f64vector int double) ;; TODO better
   (int get-dash-count context)
-  #; (void get-dash context f64vector (c-pointer double)) ;; TODO multiple return values
+  #;
+  (void get-dash context f64vector (c-pointer double)) ;; TODO multiple return values
   (void set-fill-rule! context fill-rule)
   (fill-rule get-fill-rule context)
   (void set-line-cap! context line-cap)
@@ -71,14 +72,18 @@
   (double get-tolerance context)
   (void clip! context)
   (void clip-preserve! context)
-  #;(void clip-extents context double double double double) ;; TODO multiple return values
+  #;
+  (void clip-extents context double double double double) ;; TODO multiple return values
   (bool in-clip? context double double)
   (void reset-clip! context)
-  #;(void rectangle-list-destroy! rectangle-list) ;; TODO rectangle-list
-  #;(rectangle-list copy-clip-rectangle-list context) ;; TODO rectangle-list
+  #;
+  (void rectangle-list-destroy! rectangle-list) ;; TODO rectangle-list
+  #;
+  (rectangle-list copy-clip-rectangle-list context) ;; TODO rectangle-list
   (void fill! context)
   (void fill-preserve! context)
-  #;(void fill-extents context double double double double) ;; TODO multiple return values
+  #;
+  (void fill-extents context double double double double) ;; TODO multiple return values
   (bool in-fill? context double double)
   (void mask! context pattern)
   (void mask-surface! context surface double double)
@@ -86,11 +91,50 @@
   (void paint-with-alpha! context double)
   (void stroke! context)
   (void stroke-preserve! context)
-  #;(void stroke-extents context double double double double) ;; TODO multiple return values
+  #;
+  (void stroke-extents context double double double double) ;; TODO multiple return values
   (bool in-stroke? context double double)
   (void copy-page! context)
   (void show-page! context)
   )
+
+(export fill-extents)
+(define (fill-extents context)
+  (let-location
+    ((x1 double) (y1 double) (x2 double) (y2 double))
+    ((foreign-lambda
+       void
+       "cairo_fill_extents"
+       context
+       (c-pointer double)
+       (c-pointer double)
+       (c-pointer double)
+       (c-pointer double))
+     context
+     (location x1)
+     (location y1)
+     (location x2)
+     (location y2))
+    (list x1 y1 x2 y2)))
+
+(export stroke-extents)
+(define (stroke-extents context)
+  (let-location
+    ((x1 double) (y1 double) (x2 double) (y2 double))
+    ((foreign-lambda
+       void
+       "cairo_stroke_extents"
+       context
+       (c-pointer double)
+       (c-pointer double)
+       (c-pointer double)
+       (c-pointer double))
+     context
+     (location x1)
+     (location y1)
+     (location x2)
+     (location y2))
+    (list x1 y1 x2 y2)))
 
 
 ;; Paths procedures
@@ -119,6 +163,25 @@
   (void rel-move-to! context double double)
   #;(void path-extents context double double double double) ;; TODO multiple return values
   )
+
+(export path-extents)
+(define (path-extents context)
+  (let-location
+    ((x1 double) (y1 double) (x2 double) (y2 double))
+    ((foreign-lambda
+       void
+       "cairo_path_extents"
+       context
+       (c-pointer double)
+       (c-pointer double)
+       (c-pointer double)
+       (c-pointer double))
+     context
+     (location x1)
+     (location y1)
+     (location x2)
+     (location y2))
+    (list x1 y1 x2 y2)))
 
 
 ;; Surface procedures
@@ -182,9 +245,37 @@
   (void scale! context double double)
   (void rotate! context double)
   (void identity-matrix context)
-  
+  (void get-matrix context nonnull-f64vector)
+  (void set-matrix context nonnull-f64vector)
   )
 
+(export user-to-device)
+(define (user-to-device context x y)
+  (let-location ((x* double x)
+                 (y* double y))
+    ((foreign-lambda void
+                     "cairo_user_to_device"
+                     context
+                     (c-pointer double)
+                     (c-pointer double))
+     context
+     (location x*)
+     (location y*))
+    (list x* y*)))
+
+(export device-to-user)
+(define (device-to-user context x y)
+  (let-location ((x* double x)
+                 (y* double y))
+    ((foreign-lambda void
+                     "cairo_device_to_user"
+                     context
+                     (c-pointer double)
+                     (c-pointer double))
+     context
+     (location x*)
+     (location y*))
+    (list x* y*)))
 
 ;; Text procedures
 ;; -----------------------------------------------

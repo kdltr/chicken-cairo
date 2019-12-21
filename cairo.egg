@@ -12,4 +12,6 @@
              (extension cairo.surface.image
                         (custom-build "build"))
              (extension cairo.surface.xlib
+                        (custom-build "build"))
+             (extension cairo.surface.pdf
                         (custom-build "build"))))
