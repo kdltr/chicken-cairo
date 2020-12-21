@@ -23,7 +23,7 @@
 (module cairo ()
 
 
-(import scheme (chicken base) (chicken foreign))
+(import scheme (chicken base) (chicken foreign) (chicken gc))
 
 (foreign-declare "#include \"cairo.h\"")
 
@@ -391,5 +391,20 @@
   (font-face get-font-face context)
   
   )
+
+(export make-rectangle-int)
+(define (make-rectangle-int x y w h)
+  (let ((r ((foreign-lambda* rectangle-int
+			     ((int x) (int y) (int w) (int h))
+			     "cairo_rectangle_int_t* r = (cairo_rectangle_int_t*)malloc(sizeof(cairo_rectangle_int_t));"
+			     "r->x = x;"
+			     "r->y = y;"
+			     "r->width = w;"
+			     "r->height = h;"
+			     "C_return(r);")
+	    x y w h)))
+    (set-finalizer! r free)
+    r))
+
 
 )
