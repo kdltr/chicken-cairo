@@ -75,10 +75,8 @@
   #;
   (void clip-extents context double double double double) ;; TODO multiple return values
   (bool in-clip? context double double)
-  (void reset-clip! context)
-  #;
+  (void reset-clip! context)  
   (void rectangle-list-destroy! rectangle-list) ;; TODO rectangle-list
-  #;
   (rectangle-list copy-clip-rectangle-list context) ;; TODO rectangle-list
   (void fill! context)
   (void fill-preserve! context)
@@ -136,6 +134,24 @@
      (location y2))
     (list x1 y1 x2 y2)))
 
+(export clip-extents)
+(define (clip-extents context)
+  (let-location
+   ((x1 double) (y1 double) (x2 double) (y2 double))
+   ((foreign-lambda
+     void
+     "cairo_clip_extents"
+     context
+     (c-pointer double)
+     (c-pointer double)
+     (c-pointer double)
+     (c-pointer double))
+    context
+    (location x1)
+    (location y1)
+    (location x2)
+    (location y2))
+   (list x1 y1 x2 y2)))
 
 ;; Paths procedures
 ;; -----------------------------------------------
@@ -183,6 +199,21 @@
      (location y2))
     (list x1 y1 x2 y2)))
 
+(export get-current-point)
+(define (get-current-point context)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_get_current_point"
+     context
+     (c-pointer double)
+     (c-pointer double))
+    context
+    (location x)
+    (location y))
+   (list x y)))
+
 
 ;; Surface procedures
 ;; -----------------------------------------------
@@ -213,10 +244,67 @@
   #;(status surface-set-mime-data! surface c-string blob long …) ;; TODO function pointer
   #;(void surface-get-mime-data surface c-string c-pointer long) ;; TODO multiple return values
   (bool surface-supports-mime-type? surface c-string)
-  #;(surface surface-map-to-image! surface rectangle-int) ;; TODO rectangle-int
+  (surface surface-map-to-image! surface rectangle-int) ;; TODO rectangle-int
   (void surface-unmap-image! surface surface)
   )
 
+(export surface-get-font-options)
+(define (surface-get-font-options surface)
+  (let-location
+   ((fo font-options))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_font_options"
+     surface
+     font-options)
+    surface
+    (location fo))
+   fo))
+
+(export surface-get-device-offset)
+(define (surface-get-device-offset surface)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_device_offset"
+     surface
+     (c-pointer double)
+     (c-pointer double))
+    surface
+    (location x)
+    (location y))
+   (list x y)))
+
+(export surface-get-device-scale)
+(define (surface-get-device-scale surface)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_device_scale"
+     surface
+     (c-pointer double)
+     (c-pointer double))
+    surface
+    (location x)
+    (location y))
+   (list x y)))
+
+(export surface-get-fallback-resolution)
+(define (surface-get-fallback-resolution surface)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_fallback_resolution"
+     surface
+     (c-pointer double)
+     (c-pointer double))
+    surface
+    (location x)
+    (location y))
+   (list x y)))
 
 ;; Patterns procedures
 ;; -----------------------------------------------
