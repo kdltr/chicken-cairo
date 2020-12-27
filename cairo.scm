@@ -172,7 +172,7 @@
   (void line-to! context double double)
   (void move-to! context double double)
   (void rectangle! context double double double double)
-  #;(void glyph-path! context glyph int) ;; TODO glyph
+  (void glyph-path! context glyph int) ;; TODO glyph
   (void text-path! context c-string)
   (void rel-curve-to! context double double double double double double)
   (void rel-line-to! context double double)
@@ -377,7 +377,14 @@
   (void set-font-options! context font-options)
   (void font-options-set-antialias! font-options antialias)
   (void font-options-set-hint-style! font-options hint-style)
-  (void font-options-set-hint-metrics! font-options hint-metrics))
+  (void font-options-set-hint-metrics! font-options hint-metrics)
+  (void show-text-glyphs! context c-string int (c-pointer glyph) int (c-pointer text-cluster) int text-cluster-flags)
+  ((c-pointer glyph) glyph-allocate int)
+  (void glyph-free! (c-pointer glyph))
+  (void  glyph-extents context (c-pointer glyph) int nonnull-f64vector)
+  ((c-pointer text-cluster) text-cluster-allocate int)
+  (void text-cluster-free! (c-pointer text-cluster))
+  )
 
 
 ;; Font face procedures
