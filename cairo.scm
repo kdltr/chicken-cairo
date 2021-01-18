@@ -23,7 +23,7 @@
 (module cairo ()
 
 
-(import scheme (chicken base) (chicken foreign))
+(import scheme (chicken base) (chicken foreign) (chicken gc))
 
 (foreign-declare "#include \"cairo.h\"")
 
@@ -75,10 +75,8 @@
   #;
   (void clip-extents context double double double double) ;; TODO multiple return values
   (bool in-clip? context double double)
-  (void reset-clip! context)
-  #;
+  (void reset-clip! context)  
   (void rectangle-list-destroy! rectangle-list) ;; TODO rectangle-list
-  #;
   (rectangle-list copy-clip-rectangle-list context) ;; TODO rectangle-list
   (void fill! context)
   (void fill-preserve! context)
@@ -136,6 +134,24 @@
      (location y2))
     (list x1 y1 x2 y2)))
 
+(export clip-extents)
+(define (clip-extents context)
+  (let-location
+   ((x1 double) (y1 double) (x2 double) (y2 double))
+   ((foreign-lambda
+     void
+     "cairo_clip_extents"
+     context
+     (c-pointer double)
+     (c-pointer double)
+     (c-pointer double)
+     (c-pointer double))
+    context
+    (location x1)
+    (location y1)
+    (location x2)
+    (location y2))
+   (list x1 y1 x2 y2)))
 
 ;; Paths procedures
 ;; -----------------------------------------------
@@ -156,7 +172,7 @@
   (void line-to! context double double)
   (void move-to! context double double)
   (void rectangle! context double double double double)
-  #;(void glyph-path! context glyph int) ;; TODO glyph
+  (void glyph-path! context glyph int) ;; TODO glyph
   (void text-path! context c-string)
   (void rel-curve-to! context double double double double double double)
   (void rel-line-to! context double double)
@@ -182,6 +198,21 @@
      (location x2)
      (location y2))
     (list x1 y1 x2 y2)))
+
+(export get-current-point)
+(define (get-current-point context)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_get_current_point"
+     context
+     (c-pointer double)
+     (c-pointer double))
+    context
+    (location x)
+    (location y))
+   (list x y)))
 
 
 ;; Surface procedures
@@ -213,10 +244,67 @@
   #;(status surface-set-mime-data! surface c-string blob long …) ;; TODO function pointer
   #;(void surface-get-mime-data surface c-string c-pointer long) ;; TODO multiple return values
   (bool surface-supports-mime-type? surface c-string)
-  #;(surface surface-map-to-image! surface rectangle-int) ;; TODO rectangle-int
+  (surface surface-map-to-image! surface rectangle-int) ;; TODO rectangle-int
   (void surface-unmap-image! surface surface)
   )
 
+(export surface-get-font-options)
+(define (surface-get-font-options surface)
+  (let-location
+   ((fo font-options))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_font_options"
+     surface
+     font-options)
+    surface
+    (location fo))
+   fo))
+
+(export surface-get-device-offset)
+(define (surface-get-device-offset surface)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_device_offset"
+     surface
+     (c-pointer double)
+     (c-pointer double))
+    surface
+    (location x)
+    (location y))
+   (list x y)))
+
+(export surface-get-device-scale)
+(define (surface-get-device-scale surface)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_device_scale"
+     surface
+     (c-pointer double)
+     (c-pointer double))
+    surface
+    (location x)
+    (location y))
+   (list x y)))
+
+(export surface-get-fallback-resolution)
+(define (surface-get-fallback-resolution surface)
+  (let-location
+   ((x double) (y double))
+   ((foreign-lambda
+     void
+     "cairo_surface_get_fallback_resolution"
+     surface
+     (c-pointer double)
+     (c-pointer double))
+    surface
+    (location x)
+    (location y))
+   (list x y)))
 
 ;; Patterns procedures
 ;; -----------------------------------------------
@@ -289,7 +377,14 @@
   (void set-font-options! context font-options)
   (void font-options-set-antialias! font-options antialias)
   (void font-options-set-hint-style! font-options hint-style)
-  (void font-options-set-hint-metrics! font-options hint-metrics))
+  (void font-options-set-hint-metrics! font-options hint-metrics)
+  (void show-text-glyphs! context c-string int (c-pointer glyph) int (c-pointer text-cluster) int text-cluster-flags)
+  ((c-pointer glyph) glyph-allocate int)
+  (void glyph-free! (c-pointer glyph))
+  (void  glyph-extents context (c-pointer glyph) int nonnull-f64vector)
+  ((c-pointer text-cluster) text-cluster-allocate int)
+  (void text-cluster-free! (c-pointer text-cluster))
+  )
 
 
 ;; Font face procedures
@@ -303,5 +398,20 @@
   (font-face get-font-face context)
   
   )
+
+(export make-rectangle-int)
+(define (make-rectangle-int x y w h)
+  (let ((r ((foreign-lambda* rectangle-int
+			     ((int x) (int y) (int w) (int h))
+			     "cairo_rectangle_int_t* r = (cairo_rectangle_int_t*)malloc(sizeof(cairo_rectangle_int_t));"
+			     "r->x = x;"
+			     "r->y = y;"
+			     "r->width = w;"
+			     "r->height = h;"
+			     "C_return(r);")
+	    x y w h)))
+    (set-finalizer! r free)
+    r))
+
 
 )

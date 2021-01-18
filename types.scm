@@ -195,6 +195,17 @@
 (define-foreign-type path (c-pointer "cairo_path_t")
   (check-pointer 'cairo:path) (add-tag 'cairo:path))
 
+(define-foreign-type rectangle-list (c-pointer "cairo_rectangle_list_t")
+  (check-pointer 'cairo:rectangle-list) (add-tag 'cairo:rectangle-list))
+
+(define-foreign-type rectangle-int (c-pointer "cairo_rectangle_int_t")
+  (check-pointer 'cairo:rectangle-int) (add-tag 'cairo:rectangle-int))
+
+(define-foreign-type glyph (c-pointer "cairo_glyph_t")
+  (check-pointer 'cairo:glyph) (add-tag 'cairo:glyph))
+
+(define-foreign-type text-cluster (c-pointer "cairo_text_cluster_t")
+  (check-pointer 'cairo:text-cluster) (add-tag 'cairo:text-cluster))
 
 ;; Open data types
 ;; -----------------------------------------------
