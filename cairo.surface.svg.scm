@@ -5,8 +5,13 @@
 
  (include "types.scm")
  (foreign-declare "#include \"cairo.h\"")
- (foreign-declare "#include \"cairo-svg.h\"")
 
-(defs
+ (cond-expand
+  (CAIRO_HAS_SVG_SURFACE
+   (foreign-declare "#include \"cairo-svg.h\""))
+  (else))
+
+ (guarded-defs
+  CAIRO_HAS_SVG_SURFACE
   (surface svg-surface-create c-string double double))
 )

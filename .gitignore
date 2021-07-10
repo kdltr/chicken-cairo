@@ -4,3 +4,5 @@
 *.install.sh
 *.import.scm
 *.link
+
+cairo-config.scm

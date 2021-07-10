@@ -1,0 +1,4 @@
+#!/bin/sh
+
+"$CHICKEN_CSC" -C "`pkg-config --cflags cairo`" -L "`pkg-config --libs cairo`" cairo-features.scm
+./cairo-features > cairo-config.scm

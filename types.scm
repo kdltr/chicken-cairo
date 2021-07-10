@@ -27,6 +27,33 @@
                                      ,@argument-types)))))
             (cdr exp))))))
 
+(define-syntax guarded-defs
+  (ir-macro-transformer
+    (lambda (exp inject compare)
+      `(cond-expand
+        (,(strip-syntax (second exp))
+         ,@(map
+            (lambda (def)
+              (let ((name (strip-syntax (second def)))
+                    (return-type (first def))
+                    (argument-types (cddr def)))
+                `(begin
+                   (export ,name)
+                   (define ,name
+                     (foreign-lambda ,return-type ,(struct-name (symbol->string name))
+                                     ,@argument-types)))))
+            (cddr exp)))
+        (else
+         ,@(map
+            (lambda (def)
+              (let ((name (strip-syntax (second def))))
+                `(begin
+                   (export ,name)
+                   (define ,name
+                     (lambda _
+                       (error "Cairo feature not available" ',(second exp)))))))
+            (cddr exp)))))))
+
 (define-syntax enum
   (ir-macro-transformer
     (lambda (exn inject compare)

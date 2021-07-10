@@ -4,14 +4,21 @@
  (category graphics)
  (license "LGPL-2.1")
  (author "Adrien (Kooda) Ramos")
- (dependencies srfi-1 srfi-4)
- (components (extension cairo
+ (dependencies srfi-1 srfi-4 feature-test)
+ (components (generated-source-file cairo-config
+                                    (custom-build "build-config")
+                                    (source-dependencies "cairo-features.scm"))
+             (extension cairo
                         (custom-build "build"))
              (extension cairo.surface.svg
+                        (component-dependencies cairo-config)
                         (custom-build "build"))
              (extension cairo.surface.image
+                        (component-dependencies cairo-config)
                         (custom-build "build"))
              (extension cairo.surface.xlib
+                        (component-dependencies cairo-config)
                         (custom-build "build"))
              (extension cairo.surface.pdf
+                        (component-dependencies cairo-config)
                         (custom-build "build"))))
