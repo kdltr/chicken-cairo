@@ -82,8 +82,6 @@
   (rectangle-list copy-clip-rectangle-list context) ;; TODO rectangle-list
   (void fill! context)
   (void fill-preserve! context)
-  #;
-  (void fill-extents context double double double double) ;; TODO multiple return values
   (bool in-fill? context double double)
   (void mask! context pattern)
   (void mask-surface! context surface double double)
@@ -91,8 +89,6 @@
   (void paint-with-alpha! context double)
   (void stroke! context)
   (void stroke-preserve! context)
-  #;
-  (void stroke-extents context double double double double) ;; TODO multiple return values
   (bool in-stroke? context double double)
   (void copy-page! context)
   (void show-page! context)
@@ -161,7 +157,6 @@
   (void rel-curve-to! context double double double double double double)
   (void rel-line-to! context double double)
   (void rel-move-to! context double double)
-  #;(void path-extents context double double double double) ;; TODO multiple return values
   )
 
 (export path-extents)
