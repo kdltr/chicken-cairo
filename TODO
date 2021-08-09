@@ -1,0 +1,2 @@
+- Take a final decision on the data types for points, rectangles, extents, etc… Could be lists, srfi-4 vectors, encapsulated or not?
+- Implement rectangle-list procedures so that they take Scheme lists of rectangle objects
