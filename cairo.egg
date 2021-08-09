@@ -4,7 +4,8 @@
  (category graphics)
  (license "LGPL-2.1")
  (author "Adrien (Kooda) Ramos")
- (dependencies srfi-1 srfi-4 feature-test)
+ (dependencies srfi-1 srfi-4)
+ (build-dependencies feature-test)
  (components (generated-source-file cairo-config
                                     (custom-build "build-config")
                                     (source-dependencies "cairo-features.scm"))
